@@ -1,7 +1,7 @@
 <?php
-class IndexC{
+class IndexC extends C{
 	function Index(){
-		echo 'abcabc';
+		echo SYS_CORE.'C'.CEXT;
 	}
 }
 ?>

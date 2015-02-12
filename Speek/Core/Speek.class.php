@@ -8,7 +8,7 @@ class Speek{
 		Speek::LoadFile($_GET['c'],$_GET['m']);
 	}
 	static function AutoLoad($c){
-		include_once SYS_LIB.$c.CEXT;	
+		include_once SYS_CORE.$c.CEXT;	
 	}
 	private static function CreateDir(){
 		if(!file_exists(PRJ)) mkdir(PRJ);
