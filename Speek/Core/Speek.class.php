@@ -14,8 +14,9 @@ class Speek{
 		if(!file_exists(PRJ)) mkdir(PRJ);
 		if(!file_exists(PRJ_CDIR)) mkdir(PRJ_CDIR);
 		if(!file_exists(PRJ_MDIR)) mkdir(PRJ_MDIR);
-		if(!file_exists(PRJ_VDIR)) mkdir(PRJ_VDIR);
-		if(!file_exists(PRJ_VCDIR)) mkdir(PRJ_VCDIR);
+		if(!file_exists(C('DT_V_VDIR'))) mkdir(C('DT_V_VDIR'));
+		if(!file_exists(C('DT_V_VCDIR'))) mkdir(C('DT_V_VCDIR'));
+		if(!file_exists(C('DT_V_VCACHE'))) mkdir(C('DT_V_VCACHE'));
 		if(!file_exists(PRJ_COM)) mkdir(PRJ_COM);
 		if(!file_exists(PRJ_CONF)) mkdir(PRJ_CONF);
 	}
@@ -44,7 +45,14 @@ class Speek{
 			include_once SYS_LIB.'functions'.EXT;
 		}
 		if(is_file(SYS_CONF.'Config'.EXT))
-			C(include_once(SYS_CONF.'Config'.EXT));
+			is_file(PRJ_CONF.'Config'.EXT)?C(array_merge(include_once(SYS_CONF.'Config'.EXT),include_once(PRJ_CONF.'Config'.EXT))):C(include_once(SYS_CONF.'Config'.EXT));
+		$smarty = SYS_LIB.'Tpl/Smarty'.CEXT;
+		if(!is_file($smarty)){
+			echo '模板核心库不存在！';
+			exit();
+		}else{
+			include_once $smarty;
+		}
 	}
 	private static function LoadFile($a,$b){
 		$c = ucwords($a);
@@ -58,12 +66,12 @@ class Speek{
 		}
 		$class = $c.C('DT_C_NAME');
 		if(!class_exists($class)){
-			echo '控制器导入失败！';
+			echo '控制器未定义！';
 			exit();
 		}
 		$pram = new $class;
 		if(!method_exists($pram,$m)){
-			echo '方法未定义！';
+			echo '接口未定义！';
 			exit();
 		}
 		$pram->$m();
